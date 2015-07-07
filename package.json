@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/jamplify/nerm",
   "devDependencies": {
+    "express": "^4.13.1",
     "mocha": "^2.2.5",
     "mongo-fixtures": "^1.0.1",
     "mongoose": "^4.0.6",
@@ -41,6 +42,10 @@
     "maxlen": 80,
     "singleGroups": true,
     "unused": true
+  },
+  "dependencies": {
+    "inflection": "^1.7.1",
+    "lodash": "^3.10.0",
+    "underscore.string": "^3.1.1"
   }
-
 }
