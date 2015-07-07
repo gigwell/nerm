@@ -1,0 +1,46 @@
+{
+  "name": "nerm",
+  "version": "0.0.1",
+  "description": "A route generator to match your models, yeah!",
+  "main": "index.js",
+  "scripts": {
+    "test": "bin/test.sh",
+    "setup": "bin/setup.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jamplify/nerm"
+  },
+  "keywords": [
+    "express",
+    "rest",
+    "mongoose",
+    "api",
+    "routing",
+    "routes"
+  ],
+  "author": "JP Erkelens",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamplify/nerm/issues"
+  },
+  "homepage": "https://github.com/jamplify/nerm",
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "mongo-fixtures": "^1.0.1",
+    "mongoose": "^4.0.6",
+    "should": "^7.0.1",
+    "sinon": "^1.15.4",
+    "supertest": "^1.0.1"
+  },
+  "jshintConfig": {
+    "eqeqeq": true,
+    "indent": 2,
+    "esnext": true,
+    "asi": true,
+    "maxlen": 80,
+    "singleGroups": true,
+    "unused": true
+  }
+
+}
