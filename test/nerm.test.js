@@ -68,6 +68,20 @@ describe("Nerm", function() {
         })
         .end(done)
     })
+
+    it("returns a filtered set", function(done) {
+      request.get('/api/v0/resources')
+        .query({q: JSON.stringify({name: "Worst Resource"})})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.length.should.eql(1)
+          res.body.resources.should.match([
+              {_id: "ffffffffffffa00000000002", name: "Worst Resource"}
+          ])
+        })
+        .end(done)
+
+    })
   })
 
   describe("POST", function() {
