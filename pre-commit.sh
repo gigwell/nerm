@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 
 git stash -q --keep-index
-make test
+npm test
 RESULT=$?
 git stash pop -q
 [ $RESULT -ne 0 ] && exit 1
