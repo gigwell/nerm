@@ -15,12 +15,20 @@ mongoose.connect("mongodb://33.33.33.100:27017/nerm-test")
 function hook(cb) { cb() }
 function MW(req, res, next) {next()}
 
+var schemaOpts = {
+  'toJSON': { getters: true, virtuals: true },
+  'toObject': { getters: true, virtuals: true }
+}
+
 var hookSpy = exports.hookSpy = sinon.spy(hook),
     MWSpy = exports.MWSpy = sinon.spy(MW),
-    Schema = new mongoose.Schema({name: String})
+    Schema = new mongoose.Schema({name: String}, schemaOpts)
+
+Schema.virtual('secret').get(function() {
+  return 'shhhh'
+})
 
 Schema.pre('save', hookSpy)
-Schema.pre('remove', hookSpy)
 
 var Resource = exports.Resource = mongoose.model('Resource', Schema)
 

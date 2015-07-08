@@ -25,6 +25,17 @@ describe("GET", function() {
       .end(done)
   })
 
+  it("contains virtuals", function(done) {
+    request.get('/api/v0/resources')
+      .expect(200)
+      .expect(function(res) {
+        res.body.resources.should.matchEach({
+          secret: "shhhh"
+        })
+      })
+      .end(done)
+  })
+
   it("returns a filtered set", function(done) {
     request.get('/api/v0/resources')
       .query({q: JSON.stringify({name: "Worst Resource"})})

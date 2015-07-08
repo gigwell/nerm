@@ -64,7 +64,3 @@ describe('with envelope off', function() {
   });
 });
 
-describe('with lean off', function() {
-
-});
-

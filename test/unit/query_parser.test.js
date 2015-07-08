@@ -1,4 +1,4 @@
-var parser = require('../../lib/query_parser')
+var parser = require('query_parser')
 
 describe('Query Parser', function() {
   describe('#parse', function() {
