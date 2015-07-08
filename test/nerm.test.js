@@ -2,13 +2,14 @@ require("coffee-script/register")
 require('should')
 
 var express = require('express'),
-    fixtureConf = require("./fixtures/config"),
+    fixtureConf = require("./integration/fixtures/config"),
     fixtures = require('mongo-fixtures'),
     mongoose = require('mongoose'),
     Nerm = require(".."),
     app = express(),
     supertest = require('supertest'),
-    sinon = require('sinon')
+    sinon = require('sinon'),
+    _ = require('lodash')
 
 mongoose.connect("mongodb://33.33.33.100:27017/nerm-test")
 
@@ -80,8 +81,21 @@ describe("Nerm", function() {
           ])
         })
         .end(done)
-
     })
+
+    it("returns a filtered set by regexp", function(done) {
+      request.get('/api/v0/resources')
+        .query({q: JSON.stringify({$like: {name: "Worst"}})})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.length.should.eql(1)
+          res.body.resources.should.match([
+              {_id: "ffffffffffffa00000000002", name: "Worst Resource"}
+          ])
+        })
+        .end(done)
+    })
+
   })
 
   describe("POST", function() {
@@ -225,4 +239,55 @@ describe("Nerm", function() {
       })
     })
   })
+
+  describe('with envelope off', function() {
+    describe('GET', function() {
+      it('single return no envelope', function(done) {
+        request.get('/api/v0/resources/ffffffffffffa00000000002')
+          .query({resEnvelope: false})
+          .expect(200)
+          .expect(function(res) {
+            res.body.should.have.properties({
+              name: "Worst Resource"
+            })
+          })
+          .end(done)
+        });
+
+      it('multiple return no envelope', function(done) {
+        request.get('/api/v0/resources')
+          .query({resEnvelope: false})
+          .expect(200)
+          .expect(function(res) {
+            _.isArray(res.body)
+              .should.eql(true, "Body is not an array")
+          })
+          .end(done)
+        });
+    });
+
+    it('POST returns no envelope', function(done) {
+      var name = "A New Resource"
+      request.post('/api/v0/resources')
+        .send({ resEnvelope: false, resource: {name: name} })
+        .end(function(err, res) {
+          res.body.should.have.properties({ name: name })
+          done()
+        })
+    });
+
+    it('PUT returns no envelope', function(done) {
+      var name = "A New Resource"
+      request.put('/api/v0/resources/ffffffffffffa00000000002')
+        .send({ resEnvelope: false, resource: {name: name} })
+        .end(function(err, res) {
+          res.body.should.have.properties({ name: name })
+          done()
+        })
+    });
+  });
+
+  describe('with lean off', function() {
+
+  });
 })
