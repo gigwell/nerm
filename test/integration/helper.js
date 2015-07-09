@@ -7,8 +7,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     Nerm = require("../.."),
     app = express(),
-    supertest = require('supertest'),
-    sinon = require('sinon')
+    supertest = require('supertest')
 
 mongoose.connect("mongodb://33.33.33.100:27017/nerm-test")
 
@@ -20,9 +19,25 @@ var schemaOpts = {
   'toObject': { getters: true, virtuals: true }
 }
 
-var hookSpy = exports.hookSpy = sinon.spy(hook),
+var sinon = exports.sinon = require('sinon'),
+    hookSpy = exports.hookSpy = sinon.spy(hook),
     MWSpy = exports.MWSpy = sinon.spy(MW),
-    Schema = new mongoose.Schema({name: String}, schemaOpts)
+    privateAccess = function(req) {
+      return req.body.admin || req.query.admin
+    }
+
+var Schema = new mongoose.Schema({
+  name: String,
+  junk: {default: "Gunge", type: String, nerm: {private: true}}
+}, schemaOpts)
+
+var NestedSchema = new mongoose.Schema({
+  name: String,
+  address: {
+    city: {default: "Boise", type: String, nerm: {private: true}},
+    state: String
+  }
+}, schemaOpts)
 
 Schema.virtual('secret').get(function() {
   return 'shhhh'
@@ -31,9 +46,17 @@ Schema.virtual('secret').get(function() {
 Schema.pre('save', hookSpy)
 
 var Resource = exports.Resource = mongoose.model('Resource', Schema)
+var NestedResource = mongoose.model('NestedResource', NestedSchema)
 
 app.use(require('body-parser').json())
-Nerm.route(app, Resource, {middleware: MWSpy})
+
+Nerm.route(app, Resource, {
+  middleware: MWSpy,
+  privateAccess: privateAccess
+})
+
+Nerm.route(app, NestedResource, { privateAccess: privateAccess })
+
 app.listen(5050)
 
 exports.request = supertest.agent(app)

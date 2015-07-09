@@ -8,7 +8,8 @@ module.exports = {
         return 'mongodb://33.33.33.100:27017/nerm-test'
       },
       collections: [
-        'resources'
+        'resources',
+        'nestedresources'
        ]
     }
   }
