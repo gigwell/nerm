@@ -69,8 +69,9 @@ describe('Private Field retrieval', function() {
           _.set(rawData, envelope, op.data)
 
         request[op.method](url)[op.dataMethod](rawData)
-          .expect(200)
+          //.expect(200)
           .expect(function(res) {
+            console.dir(res.body)
             verify(op.name, res.body, function(item) {
               item.should.not.have.property('junk')
             })
@@ -239,6 +240,11 @@ describe('Private Field Selection', function() {
       request.get('/api/v0/resources')
         .query({admin: true, select: 'junk'})
         .expect(200)
+        .expect(function(res) {
+          res.body.resources.should.matchEach(function(i) {
+            i.should.not.have.property('name')
+          })
+        })
         .end(done)
     })
   })

@@ -87,13 +87,8 @@ describe('Permissions', function() {
   });
 
   describe('#buildSelectString', function() {
-    it('includes supplied select list', function() {
-      permissions.buildSelectString(['field1', 'field2'], ['field3'])
-        .should.eql('-field1 -field2 field3')
-    })
-
     it('negates the deselect list', function() {
-      permissions.buildSelectString(['field1', 'field2'], [])
+      permissions.buildSelectString(['field1', 'field2'])
         .should.eql('-field1 -field2')
     })
   });

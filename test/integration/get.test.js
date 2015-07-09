@@ -18,6 +18,7 @@ describe("GET", function() {
     request.get('/api/v0/resources/ffffffffffffa00000000002')
       .expect(200)
       .expect(function(res) {
+        console.dir(res.body)
         res.body.resource.should.have.properties({
           name: "Worst Resource"
         })
