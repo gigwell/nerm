@@ -214,4 +214,59 @@ describe('Private Field Modification', function() {
       }, done)
     })
   });
-});
+
+})
+
+describe('Private Field Selection', function() {
+  describe('without access', function() {
+    it('should not allow private field selection', function(done) {
+      request.get('/api/v0/resources')
+        .query({select: 'junk'})
+        .expect(401, {msg: "Unauthorized attempt to access private field" })
+        .end(done)
+    })
+
+    it('should not allow nested private field selection', function(done) {
+      request.get('/api/v0/nestedresources')
+        .query({select: 'address.city'})
+        .expect(401, {msg: "Unauthorized attempt to access private field" })
+        .end(done)
+    })
+  })
+
+  describe('with access', function() {
+    it('should allow private field selection', function(done) {
+      request.get('/api/v0/resources')
+        .query({admin: true, select: 'junk'})
+        .expect(200)
+        .end(done)
+    })
+  })
+})
+
+describe('Private Field Filtering', function() {
+  describe('without access', function() {
+    it('should not allow private field selection', function(done) {
+      request.get('/api/v0/resources')
+        .query({q: JSON.stringify({junk: 'trash'})})
+        .expect(401, {msg: "Unauthorized attempt to access private field" })
+        .end(done)
+    })
+
+    it('should not allow nested private field selection', function(done) {
+      request.get('/api/v0/nestedresources')
+        .query({q: JSON.stringify({'address.city': 'trashville'})})
+        .expect(401, {msg: "Unauthorized attempt to access private field" })
+        .end(done)
+    })
+  })
+
+  describe('with access', function() {
+    it('should allow private field selection', function(done) {
+      request.get('/api/v0/resources')
+        .query({admin: true, q: JSON.stringify({'junk': 'trash'})})
+        .expect(200)
+        .end(done)
+    })
+  })
+})

@@ -28,8 +28,14 @@ var sinon = exports.sinon = require('sinon'),
 
 var Schema = new mongoose.Schema({
   name: String,
-  junk: {default: "Gunge", type: String, nerm: {private: true}}
+  junk: {default: "Gunge", type: String, nerm: {private: true}},
+  _child: {ref: 'ChildResource', type: mongoose.Schema.ObjectId}
 }, schemaOpts)
+
+var ChildSchema = new mongoose.Schema({
+  name: String,
+  hidden: { type: String, nerm: {private: true}}
+})
 
 var NestedSchema = new mongoose.Schema({
   name: String,
@@ -47,6 +53,7 @@ Schema.pre('save', hookSpy)
 
 var Resource = exports.Resource = mongoose.model('Resource', Schema)
 var NestedResource = mongoose.model('NestedResource', NestedSchema)
+mongoose.model('ChildResource', ChildSchema)
 
 app.use(require('body-parser').json())
 

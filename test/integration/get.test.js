@@ -62,5 +62,46 @@ describe("GET", function() {
       .end(done)
   })
 
+  describe('with populated fields', function() {
+    it('returns the with the child doc', function(done) {
+      request.get('/api/v0/resources/ffffffffffffa00000000002')
+        .query({populate: '_child'})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resource._child.should.have.properties({
+            name: 'Best Child'
+          })
+        })
+        .end(done)
+    })
+  });
+
+  describe('with sorted fields', function() {
+    it('sorts the docs', function(done) {
+      request.get('/api/v0/resources')
+        .query({sort: '-name'})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.should.match([
+            {name: 'Worst Resource'},
+            {name: 'Best Resource'}
+          ])
+        })
+        .end(done)
+    })
+  });
+
+  describe('with selected fields', function() {
+    it('sorts the docs', function(done) {
+      request.get('/api/v0/resources/ffffffffffffa00000000002')
+        .query({select: '-name'})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resource
+            .should.not.have.property('name')
+        })
+        .end(done)
+    })
+  });
 })
 

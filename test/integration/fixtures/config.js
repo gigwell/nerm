@@ -9,7 +9,8 @@ module.exports = {
       },
       collections: [
         'resources',
-        'nestedresources'
+        'nestedresources',
+        'childresources'
        ]
     }
   }

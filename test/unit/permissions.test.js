@@ -66,9 +66,34 @@ describe('Permissions', function() {
     })
   });
 
+  describe('#allFieldsPermitted', function() {
+    it('returns true if all fields are accessible', function() {
+      permissions.allFieldsPermitted(['blah'], ['wocka'])
+        .should.eql(true)
+    });
+
+    it('returns false if trying to access a forbidden field', function() {
+      permissions.allFieldsPermitted(['blah'], ['wocka', 'blah'])
+        .should.eql(false)
+    });
+
+    it('returns false if accessing forbidden fields with mods', function() {
+      permissions.allFieldsPermitted(['-blah'], ['wocka', 'blah'])
+        .should.eql(false)
+
+      permissions.allFieldsPermitted(['+blah'], ['wocka', 'blah'])
+        .should.eql(false)
+    });
+  });
+
   describe('#buildSelectString', function() {
+    it('includes supplied select list', function() {
+      permissions.buildSelectString(['field1', 'field2'], ['field3'])
+        .should.eql('-field1 -field2 field3')
+    })
+
     it('negates the deselect list', function() {
-      permissions.buildSelectString(['field1', 'field2'])
+      permissions.buildSelectString(['field1', 'field2'], [])
         .should.eql('-field1 -field2')
     })
   });
