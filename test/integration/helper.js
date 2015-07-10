@@ -32,6 +32,11 @@ var Schema = new mongoose.Schema({
   _child: {ref: 'ChildResource', type: mongoose.Schema.ObjectId}
 }, schemaOpts)
 
+var ScopedSchema = new mongoose.Schema({
+  name: String,
+  junk: {default: "Gunge", type: String, nerm: {private: true}},
+})
+
 var ChildSchema = new mongoose.Schema({
   name: String,
   hidden: { type: String, nerm: {private: true}}
@@ -53,6 +58,8 @@ Schema.pre('save', hookSpy)
 
 var Resource = exports.Resource = mongoose.model('Resource', Schema)
 var NestedResource = mongoose.model('NestedResource', NestedSchema)
+var LiteralScope  = mongoose.model('LiteralScope', ScopedSchema)
+var FnScope  = mongoose.model('FnScope', ScopedSchema)
 mongoose.model('ChildResource', ChildSchema)
 
 app.use(require('body-parser').json())
@@ -62,7 +69,13 @@ Nerm.route(app, Resource, {
   privateAccess: privateAccess
 })
 
+function scopeFn(req) {
+  return !!req.query.admin ? {} : {name: /Best/}
+}
+
 Nerm.route(app, NestedResource, { privateAccess: privateAccess })
+Nerm.route(app, LiteralScope, {scope: { name: /Best/ }})
+Nerm.route(app, FnScope, {scope: scopeFn})
 
 app.listen(5050)
 

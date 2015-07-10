@@ -27,6 +27,7 @@
   "homepage": "https://github.com/jamplify/nerm",
   "devDependencies": {
     "body-parser": "^1.13.2",
+    "coffee-script": "^1.9.3",
     "express": "^4.13.1",
     "mocha": "^2.2.5",
     "mongo-fixtures": "^1.0.1",

@@ -10,7 +10,9 @@ module.exports = {
       collections: [
         'resources',
         'nestedresources',
-        'childresources'
+        'childresources',
+        'literalscopes',
+        'fnscopes'
        ]
     }
   }
