@@ -56,6 +56,7 @@ Schema.virtual('secret').get(function() {
 })
 
 Schema.pre('save', hookSpy)
+Schema.pre('findOneAndUpdate', hookSpy)
 
 var Resource = exports.Resource = mongoose.model('Resource', Schema)
 var NestedResource = mongoose.model('NestedResource', NestedSchema)

@@ -29,6 +29,7 @@ describe("PUT", function() {
       .send({ resource: {name: 'OK Resource'}})
       .expect(200)
       .end(function() {
+        hookSpy.called.should.eql(true, "Hook not called")
         hookSpy.calledOnce.should.eql(true, "Hook not called once")
         done()
       })
