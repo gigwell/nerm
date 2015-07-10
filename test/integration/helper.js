@@ -22,13 +22,16 @@ var schemaOpts = {
 var sinon = exports.sinon = require('sinon'),
     hookSpy = exports.hookSpy = sinon.spy(hook),
     MWSpy = exports.MWSpy = sinon.spy(MW),
+    writeAccess = function(req) {
+      return req.body.writer || req.query.writer
+    },
     privateAccess = function(req) {
       return req.body.admin || req.query.admin
     }
 
 var Schema = new mongoose.Schema({
   name: String,
-  junk: {default: "Gunge", type: String, nerm: {private: true}},
+  junk: {default: "Gunge", type: String, nerm: {private: true, readOnly: true}},
   tags: [{type: String, nerm: {private: true}}],
   _child: {ref: 'ChildResource', type: mongoose.Schema.ObjectId}
 }, schemaOpts)
@@ -46,7 +49,11 @@ var ChildSchema = new mongoose.Schema({
 var NestedSchema = new mongoose.Schema({
   name: String,
   address: {
-    city: {default: "Boise", type: String, nerm: {private: true}},
+    city: {
+      default: "Boise",
+      type: String,
+      nerm: {private: true, readOnly: true}
+    },
     state: String
   }
 }, schemaOpts)
@@ -68,14 +75,18 @@ app.use(require('body-parser').json())
 
 Nerm.route(app, Resource, {
   middleware: MWSpy,
-  privateAccess: privateAccess
+  privateAccess: privateAccess,
+  writeAccess: writeAccess
 })
 
 function scopeFn(req) {
   return !!req.query.admin ? {} : {name: /Best/}
 }
 
-Nerm.route(app, NestedResource, { privateAccess: privateAccess })
+Nerm.route(app, NestedResource, {
+  privateAccess: privateAccess,
+  writeAccess: writeAccess
+})
 Nerm.route(app, LiteralScope, {scope: { name: /Best/ }})
 Nerm.route(app, FnScope, {scope: scopeFn})
 

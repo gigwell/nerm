@@ -61,7 +61,7 @@ describe('Private Field retrieval', function() {
       async.eachSeries(ops, function(op, next) {
         var url = _.sprintf(op.url, 'resources'),
             envelope = _.isArray(op.data) ? 'resources' : 'resource'
-            rawData = {resEnvelope: false}
+            rawData = {writer: true, resEnvelope: false}
 
         if (op.dataMethod === 'query')
           _.extend(rawData, op.data)
@@ -84,7 +84,7 @@ describe('Private Field retrieval', function() {
       async.eachSeries(ops, function(op, next) {
         var url = _.sprintf(op.url, 'nestedresources'),
             envelope = _.isArray(op.data) ? 'nestedresources' : 'nestedresource'
-            rawData = {resEnvelope: false}
+            rawData = {writer: true, resEnvelope: false}
 
         if (op.dataMethod === 'query')
           _.extend(rawData, op.data)
@@ -109,7 +109,7 @@ describe('Private Field retrieval', function() {
       async.eachSeries(ops, function(op, next) {
         var url = _.sprintf(op.url, 'resources'),
             envelope = _.isArray(op.data) ? 'resources' : 'resource'
-            rawData = {admin: true, resEnvelope: false}
+            rawData = {writer: true, admin: true, resEnvelope: false}
 
         if (op.dataMethod === 'query')
           _.extend(rawData, op.data)
@@ -174,7 +174,7 @@ describe('Private Field Modification', function() {
       async.eachSeries(ops, function(op, next) {
         var url = _.sprintf(op.url, 'resources'),
             envelope = _.isArray(op.data) ? 'resources' : 'resource'
-            rawData = {resEnvelope: false}
+            rawData = {writer: true, resEnvelope: false}
 
         _.set(rawData, envelope, op.data)
 
@@ -189,7 +189,7 @@ describe('Private Field Modification', function() {
       async.eachSeries(ops, function(op, next) {
         var url = _.sprintf(op.url, 'nestedresources'),
             envelope = _.isArray(op.data) ? 'nestedresources' : 'nestedresource'
-            rawData = {resEnvelope: false}
+            rawData = {writer: true, resEnvelope: false}
 
         _.set(rawData, envelope, op.data)
         request[op.method](url).send(rawData)
@@ -204,12 +204,13 @@ describe('Private Field Modification', function() {
       async.eachSeries(ops, function(op, next) {
         var url = _.sprintf(op.url, 'resources'),
             envelope = _.isArray(op.data) ? 'resources' : 'resource'
-            rawData = {admin: true, resEnvelope: false}
+            rawData = {admin: true, writer: true, resEnvelope: false}
 
         _.set(rawData, envelope, op.data)
 
         request[op.method](url)
           .send(rawData)
+
           .expect(200)
           .end(next)
       }, done)

@@ -2,15 +2,15 @@ var permissions = require('permissions')
 
 
 describe('Permissions', function() {
-  describe('#allPublic', function() {
+  describe('#containsFields', function() {
     describe('with an array', function() {
-      it('returns false if any object has a private field', function() {
+      it('returns true if any object is in the list', function() {
         var objs = [
           {name: 'bobo'},
           {name: 'Mr. Moneymaker', ssno: '123.32.1234'}
         ]
         var deselect = ['ssno']
-        permissions.allPublic(objs, deselect).should.eql(false)
+        permissions.containsFields(objs, deselect).should.eql(true)
       })
 
       it("correctly handles complex situations", function() {
@@ -19,12 +19,12 @@ describe('Permissions', function() {
           {name: 'Mr. Moneymaker', secret: { ssno: '123.32.1234'} }
         ]
         var deselect = ['secret.ssno']
-        permissions.allPublic(objs, deselect).should.eql(false)
+        permissions.containsFields(objs, deselect).should.eql(true)
 
       })
     })
 
-    it('returns false if nested fields are in the list', function() {
+    it('returns true if nested fields are in the list', function() {
       var obj = {
         name: 'bob',
         location: {
@@ -32,45 +32,45 @@ describe('Permissions', function() {
         }
       }
       var deselect = ['location.city']
-      permissions.allPublic(obj, deselect).should.eql(false)
+      permissions.containsFields(obj, deselect).should.eql(true)
     })
 
-    it('returns false if any fields are in the deselect list', function() {
+    it('returns true if any fields are in the list', function() {
       var obj = {
         name: 'val'
       }
       var deselect = ['name']
-      permissions.allPublic(obj, deselect).should.eql(false)
+      permissions.containsFields(obj, deselect).should.eql(true)
 
     });
 
-    it('returns true if all fields are public', function() {
+    it('returns false if no fields are in the list', function() {
       var obj = {
         junk: 'val',
         stuff: 'cool'
       }
       var deselect = ['name']
-      permissions.allPublic(obj, deselect).should.eql(true)
+      permissions.containsFields(obj, deselect).should.eql(false)
     })
   });
 
-  describe('#buildDeselectList', function() {
+  describe('#getPathsWithOption', function() {
     it('handles array values', function() {
       var schemaPaths = {
         field1: {options: {type: [{nerm: {private: true}}]}},
         field2: {options: {type: [{}]}}
       }
-      permissions.buildDeselectList(schemaPaths)
+      permissions.getPathsWithOption(schemaPaths, 'private')
         .should.eql(['field1'])
     })
 
     it('builds list from a simple schema', function() {
       var schemaPaths = {
         field1: {options: {}},
-        field2: {options: { nerm: {private: true} }}
+        field2: {options: { nerm: {readOnly: true} }}
       }
 
-      permissions.buildDeselectList(schemaPaths)
+      permissions.getPathsWithOption(schemaPaths, 'readOnly')
         .should.eql(['field2'])
     })
   });
