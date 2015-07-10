@@ -55,6 +55,15 @@ describe('Permissions', function() {
   });
 
   describe('#buildDeselectList', function() {
+    it('handles array values', function() {
+      var schemaPaths = {
+        field1: {options: {type: [{nerm: {private: true}}]}},
+        field2: {options: {type: [{}]}}
+      }
+      permissions.buildDeselectList(schemaPaths)
+        .should.eql(['field1'])
+    })
+
     it('builds list from a simple schema', function() {
       var schemaPaths = {
         field1: {options: {}},

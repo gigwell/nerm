@@ -69,11 +69,11 @@ describe('Private Field retrieval', function() {
           _.set(rawData, envelope, op.data)
 
         request[op.method](url)[op.dataMethod](rawData)
-          //.expect(200)
+          .expect(200)
           .expect(function(res) {
-            console.dir(res.body)
             verify(op.name, res.body, function(item) {
               item.should.not.have.property('junk')
+              item.should.not.have.property('tags')
             })
           })
           .end(next)

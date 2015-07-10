@@ -29,6 +29,7 @@ var sinon = exports.sinon = require('sinon'),
 var Schema = new mongoose.Schema({
   name: String,
   junk: {default: "Gunge", type: String, nerm: {private: true}},
+  tags: [{type: String, nerm: {private: true}}],
   _child: {ref: 'ChildResource', type: mongoose.Schema.ObjectId}
 }, schemaOpts)
 
