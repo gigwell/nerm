@@ -23,10 +23,10 @@ var User = mongoose.model('User', Schema)
 Nerm.route(app, User)
 ```
 ```
-GET /api/v0/users
-GET /api/v0/users/ffffffffffffb00000000001
-POST /api/v0/users
-PUT /api/v0/users/ffffffffffffb00000000001
+GET    /api/v0/users
+POST   /api/v0/users
+GET    /api/v0/users/ffffffffffffb00000000001
+PUT    /api/v0/users/ffffffffffffb00000000001
 DELETE /api/v0/users/ffffffffffffb00000000001
 ```
 
