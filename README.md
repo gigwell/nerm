@@ -101,10 +101,12 @@ Nerm.route(app, User, {
 
 ## Scope
 Sometimes a resource needs to be further restricted. To do that pass a scope function or literal.
+```javascript
 Nerm.route(app, User, {
   scope: function(req) { return {location: req.user.location }}
 })
 // Callers will only be able to retrieve other users in their location.
+```
 
 ## Defaults
 Default options can be provided by calling Nerm.defaults, these will apply to all routes not given their own options
