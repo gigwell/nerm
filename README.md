@@ -1,5 +1,5 @@
 # nerm
-![NERM!!!](https://d13yacurqjgara.cloudfront.net/users/1390/screenshots/113099/shot_1297341583.png)
+![NERM!!!](/nerm.png)
 
 RESTful API generator for Express and Mongoose. Nerm maps routes directly to your mongoose models.
 
