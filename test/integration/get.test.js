@@ -92,6 +92,21 @@ describe("GET", function() {
     })
   });
 
+  describe('with limit', function() {
+    it('limits the doc count', function(done) {
+      request.get('/api/v0/resources')
+        .query({limit: 1})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.length.should.eql(1)
+          res.body.resources.should.match([
+            {name: 'Best Resource'}
+          ])
+        })
+        .end(done)
+    })
+  });
+
   describe('with selected fields', function() {
     it('sorts the docs', function(done) {
       request.get('/api/v0/resources/ffffffffffffa00000000002')
