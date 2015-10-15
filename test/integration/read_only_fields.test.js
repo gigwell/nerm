@@ -65,7 +65,6 @@ describe('Read only Fields', function() {
 
         _.set(rawData, envelope, op.data)
         request[op.method](url).send(rawData)
-          .expect(200)
           .expect(401, {msg: "Attempted to modify a read only field"})
           .end(next)
       }, done)

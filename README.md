@@ -100,10 +100,18 @@ Nerm.route(app, User, {
 ```
 
 ## Scope
-Sometimes a resource needs to be further restricted. To do that pass a scope function or literal.
+Sometimes a resource needs to be further restricted. To do that pass a scope function or literal. The function can be syncronous or asyncronous.
 ```javascript
 Nerm.route(app, User, {
+  scope: {location: 'New York'}
+})
+
+Nerm.route(app, User, {
   scope: function(req) { return {location: req.user.location }}
+})
+
+Nerm.route(app, User, {
+  scope: function(req, cb) { cb({location: req.user.location})}
 })
 // Callers will only be able to retrieve other users in their location.
 ```

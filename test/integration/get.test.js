@@ -3,7 +3,7 @@ var helper = require('./helper'),
 
 describe("GET", function() {
   it("returns all objects of the specified type", function(done) {
-    request.get('/api/v0/resources')
+    request.get('/api/v0/resources?sort=name')
       .expect(200)
       .expect(function(res) {
         res.body.resources.should.match([

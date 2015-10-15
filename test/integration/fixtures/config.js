@@ -4,6 +4,7 @@ module.exports = {
   },
   envs: {
     test: {
+      quiet: true,
       database: function() {
         return 'mongodb://33.33.33.100:27017/nerm-test'
       },
