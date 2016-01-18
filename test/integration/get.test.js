@@ -99,9 +99,6 @@ describe("GET", function() {
         .expect(200)
         .expect(function(res) {
           res.body.resources.length.should.eql(1)
-          res.body.resources.should.match([
-            {name: 'Best Resource'}
-          ])
         })
         .end(done)
     })

@@ -30,7 +30,7 @@ describe('Scoping', function() {
         .expect(200)
         .expect(function(res) {
           res.body.literalscopes.length.should.eql(2)
-          res.body.literalscopes.should.match([
+          res.body.literalscopes.should.containDeep([
             {name: 'Best Resource'},
             {name: 'Best Scoped Resource'}
           ])
