@@ -2,6 +2,30 @@ var parser = require('query_parser')
 
 describe('Query Parser', function() {
   describe('#parse', function() {
+    it('creates date objects', function() {
+      var dateStr = "2016-12-24T19:20:33.000Z"
+      var date = new Date(dateStr)
+      var q = JSON.stringify({
+        $date: {createdOn: dateStr}
+      })
+      parser.parse(q).should.eql({
+        createdOn: date
+      })
+    })
+
+    it('it creates multiple dates', function() {
+      var d1 = new Date("2016-12-24T19:20:33.000Z")
+      var d2 = new Date("2016-12-25T19:20:33.000Z")
+      var q = JSON.stringify({
+        $date: {createdOn: d1.toString(), updatedOn: d2.toString()}
+      })
+      parser.parse(q).should.eql({
+        createdOn: d1,
+        updatedOn: d2
+      })
+
+    })
+
     it('parses regular JSON', function() {
       var q = JSON.stringify({
         name: 'cooldude',
