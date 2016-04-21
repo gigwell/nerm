@@ -142,5 +142,26 @@ describe("GET", function() {
         .end(done)
     })
   });
+
+  describe('with count', function() {
+    it('returns the number of documents', function(done) {
+      request.get('/api/v0/resources/count')
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.count.should.eql(2)
+        })
+        .end(done)
+    })
+
+    it('respects the query', function(done) {
+      request.get('/api/v0/resources/count')
+        .query({q: {name: "Worst Resource"}})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.count.should.eql(1)
+        })
+        .end(done)
+    })
+  })
 })
 
