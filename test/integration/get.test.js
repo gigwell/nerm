@@ -117,7 +117,7 @@ describe("GET", function() {
   describe('with skip', function() {
     it('skips the specified amount of results', function(done) {
       request.get('/api/v0/resources')
-        .query({skip: 1})
+        .query({skip: 1, sort: 'name'})
         .expect(200)
         .expect(function(res) {
           res.body.resources.should.match([
