@@ -102,7 +102,33 @@ describe("GET", function() {
         })
         .end(done)
     })
+
+    it('can handle limits of more than 1', function(done) {
+      request.get('/api/v0/resources')
+        .query({limit: 2})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.length.should.eql(2)
+        })
+        .end(done)
+    })
   });
+
+  describe('with skip', function() {
+    it('skips the specified amount of results', function(done) {
+      request.get('/api/v0/resources')
+        .query({skip: 1})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.should.match([
+              { _id: "ffffffffffffa00000000002", name: "Worst Resource" }
+          ])
+          res.body.resources.length.should.eql(1)
+        })
+        .end(done)
+
+    })
+  })
 
   describe('with selected fields', function() {
     it('sorts the docs', function(done) {
