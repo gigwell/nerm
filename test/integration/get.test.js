@@ -163,5 +163,32 @@ describe("GET", function() {
         .end(done)
     })
   })
+
+  describe('with distinct', function() {
+    it('returns the distinct set of values', function(done) {
+      request.get('/api/v0/resources')
+        .query({distinct: 'tags'})
+        .expect(200)
+        .expect(function(res) {
+          res.body.resources.tags.sort().should.eql([
+              "common", "dumb", "good", "nice", "special", "ugly"
+          ])
+        })
+        .end(done)
+    })
+
+    it('respects the query', function(done) {
+      request.get('/api/v0/resources')
+        .query({q: {name: "Worst Resource"}, distinct: 'tags'})
+        .expect(200)
+        .expect(function(res) {
+          console.dir(res.body)
+          res.body.resources.tags.sort().should.eql([
+              "common", "dumb", "ugly"
+          ])
+        })
+        .end(done)
+    })
+  })
 })
 
