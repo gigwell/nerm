@@ -14,6 +14,18 @@ describe('Scoping', function() {
         .end(done)
     })
 
+    describe("with distinct", function() {
+      it('restricts the result', function(done) {
+        request.get('/api/v0/fnscopes')
+          .query({distinct: 'name'})
+          .expect(200)
+          .expect(function(res) {
+            res.body.fnscopes.name.should.eql(['Best Resource'])
+          })
+          .end(done)
+      })
+    })
+
     it("doesn't trample existing query", function(done) {
       request.get('/api/v0/literalscopes')
         .query({q: JSON.stringify({$like: {name: 'Scope'}})})
