@@ -1,6 +1,6 @@
 {
   "name": "nerm",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "A route generator to match your models, yeah!",
   "main": "index.js",
   "scripts": {
