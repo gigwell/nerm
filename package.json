@@ -45,7 +45,7 @@
     "unused": true
   },
   "dependencies": {
-    "async": "^1.3.0",
+    "async": "^2.6.4",
     "flat": "^1.6.0",
     "inflection": "^1.7.1",
     "lodash": "^4.0.0",
