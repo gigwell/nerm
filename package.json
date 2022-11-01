@@ -29,7 +29,7 @@
     "body-parser": "^1.13.2",
     "coffee-script": "^1.9.3",
     "express": "^4.15.4",
-    "mocha": "^2.2.5",
+    "mocha": "^10.1.0",
     "mongoose": "^5.7.6",
     "should": "^7.0.1",
     "sinon": "^1.15.4",
