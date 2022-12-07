@@ -33,7 +33,7 @@
     "mongoose": "^5.7.6",
     "should": "^7.0.1",
     "sinon": "^1.15.4",
-    "supertest": "^1.0.1"
+    "supertest": "^6.3.2"
   },
   "jshintConfig": {
     "eqeqeq": true,
